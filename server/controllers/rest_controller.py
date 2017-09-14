@@ -6,8 +6,10 @@ import requests_toolbelt.adapters.appengine
 requests_toolbelt.adapters.appengine.monkeypatch()
 HTTP_REQUEST = google.auth.transport.requests.Request()
 
-# TODO(dlochrie): Provide a nice way of allowing arguments or a config file to provide allowed URLS.
-ALLOWED_HOSTS = 'http://localhost:3000'
+HOSTS_ALLOWED = [
+    'http://localhost:3000',
+    'http://localhost:8080',
+]
 
 class RestHandler(webapp2.RequestHandler):
     def dispatch(self):
@@ -19,7 +21,12 @@ class RestHandler(webapp2.RequestHandler):
         self.response.write('Unauthorized')
 
     def SendJson(self, r):
-        self.response.headers['Access-Control-Allow-Origin'] = ALLOWED_HOSTS
+        # Prevent other apps from making requests to this server.
+        headers = self.request.headers
+        origin = headers.get('Origin')
+        if origin in HOSTS_ALLOWED:
+            self.response.headers['Access-Control-Allow-Origin'] = origin
+
         self.response.headers['content-type'] = 'text/plain'
         self.response.write(json.dumps(r))
 

@@ -11,7 +11,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:8080/rest/widgets/all')
+    fetch('http://localhost:8081/rest/widgets/all')
         .then(response => response.json())
         .then((responseJson) => {
           console.log('responseJson', responseJson)
