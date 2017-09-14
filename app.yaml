@@ -1,0 +1,12 @@
+runtime: python27
+threadsafe: true
+api_version: 1
+service: backend
+
+handlers:
+- url: /rest/.*
+  script: server.main.APP
+
+# Don't include any client files
+skip_files:
+-  ^(.*/)?.*/client/.*$
