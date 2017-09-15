@@ -14,7 +14,11 @@ handlers:
   static_files: build/\1
   upload: build/.*
 
-# Don't include any client files
+# We typically want to skip everything the "build" directory.
+# Make sure to add a build script that removes source file maps.
+# See:
+#
+#   https://github.com/facebookincubator/create-react-app/issues/1341#issuecomment-309689095
+#
 skip_files:
--  ^(.*/)?.*/node_modules/.*$
--  ^(.*/)?.*/src/.*$
+- ^(?!build).*$
